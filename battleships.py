@@ -25,21 +25,27 @@ class sea:
 
     def display(self):
 
-        print '-------------------------------'
+        print '    0  1  2  3  4  5  6  7  8  9'
+        print '  -------------------------------'
         for v in range(10):
-            print '|',
+            print '%s |' % v,
             for h in range(10):
                 print self.water[h][v] + '|',
             print ''
-            print '-------------------------------'
+            print '  -------------------------------'
 
     def add_vessel(self, vessel_type, location, orientation):
         if orientation == 'E':
+            if location[0] + vessels[vessel_type] > 10:
+                return False
             for h in range(location[0], location[0] + vessels[vessel_type]):
                 self.water[h][location[1]] = vessel_type
         elif orientation == 'S':
+            if location[1] + vessels[vessel_type] > 10:
+                return False
             for v in range(location[1], location[1] + vessels[vessel_type]):
                 self.water[location[0]][v] = vessel_type
+        return True
 
     def shoot(self, location):
         if self.water[location[0]][location[1]] == ' ' or self.water[location[0]][location[1]] == 'M':
@@ -67,12 +73,19 @@ def human_place_ships(board):
     board.display()
     for vessel, size in vessels.iteritems():
         print vessel
-        print 'Enter co-ordinates, origin top left, 0-9'
-        x = int(raw_input('Across: '))
-        y = int(raw_input('Down: '))
-        direction = str(raw_input('Direction (E or S): '))
-        print vessel, [x, y], direction
-        board.add_vessel(vessel, [x, y], direction)
+        while True:
+            print 'Enter co-ordinates, origin top left, 0-9'
+            x = int(raw_input('Across: '))
+            y = int(raw_input('Down: '))
+            while True:
+                direction = str(raw_input('Direction (E or S): ')).upper()
+                if direction in ['E', 'S']:
+                    break
+                print 'East or South, try again'
+            if board.add_vessel(vessel, [x, y], direction):
+                break
+            print 'Invalid entry, try again'
+            print ''
         board.display()
         print ''
     return board
