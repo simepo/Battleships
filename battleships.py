@@ -1,6 +1,8 @@
 """Battleships
 """
 
+import random
+
 # Global definitions
 vessels = {'C': 5, 'B': 4, 'R': 3, 'S': 3, 'D': 2}
 #vessels = {'C': 0, 'B': 0, 'R': 0, 'S': 0, 'D': 2}
@@ -39,11 +41,15 @@ class sea:
             if location[0] + vessels[vessel_type] > 10:
                 return False
             for h in range(location[0], location[0] + vessels[vessel_type]):
+                if self.water[h][location[1]] != ' ':
+                    return False
                 self.water[h][location[1]] = vessel_type
         elif orientation == 'S':
             if location[1] + vessels[vessel_type] > 10:
                 return False
             for v in range(location[1], location[1] + vessels[vessel_type]):
+                if self.water[location[0]][v] != ' ':
+                    return False
                 self.water[location[0]][v] = vessel_type
         return True
 
@@ -69,6 +75,7 @@ class sea:
         else:
             return False
 
+
 def human_place_ships(board):
     board.display()
     for vessel, size in vessels.iteritems():
@@ -90,14 +97,32 @@ def human_place_ships(board):
         print ''
     return board
 
+
+def computer_place_ships(board):
+    for vessel, size in vessels.iteritems():
+        while True:
+            if random.randint(0, 1) == 0:
+                direction = 'E'
+            else:
+                direction = 'S'
+            if direction == 'E':
+                x = random.randint(0, 9 - size)
+                y = random.randint(0, 9)
+            else:
+                x = random.randint(0, 9)
+                y = random.randint(0, 9 - size)
+            if board.add_vessel(vessel, [x, y], direction):
+                break
+    return board
+
 # Main program loop
 # Initiate boards
-p1_board = sea()
-#p2_board = sea()
+#p1_board = sea()
+p2_board = sea()
 
 # Place ships
-p1_board = human_place_ships(p1_board)
-#p2_board = computer_place_ships(p2_board)
+#p1_board = human_place_ships(p1_board)
+p2_board = computer_place_ships(p2_board)
 
 # Take shots until somebody wins
 
@@ -111,4 +136,4 @@ p1_board.display()
 print p1_board.shoot([3, 4])
 print p1_board.lost()
 """
-p1_board.display()
+p2_board.display()
