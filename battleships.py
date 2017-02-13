@@ -36,6 +36,21 @@ class sea:
             print ''
             print '  -------------------------------'
 
+    def display_shots(self):
+
+        print '    0  1  2  3  4  5  6  7  8  9'
+        print '  -------------------------------'
+        for v in range(10):
+            print '%s |' % v,
+            for h in range(10):
+                if self.water[h][v] in ['C', 'B', 'R', 'S', 'D']:
+                    square = ' '
+                else:
+                    square = self.water[h][v]
+                print square + '|',
+            print ''
+            print '  -------------------------------'
+
     def add_vessel(self, vessel_type, location, orientation):
         # print 'Adding %s at %s %s' % (vessel_type, location, orientation)
         if orientation == 'E':
@@ -59,10 +74,12 @@ class sea:
         return True
 
     def shoot(self, location):
-        if self.water[location[0]][location[1]] == ' ' or \
-                        self.water[location[0]][location[1]] == 'M':
+        if self.water[location[0]][location[1]] == ' ':
             self.water[location[0]][location[1]] = 'M'
             return 'Miss'
+        elif self.water[location[0]][location[1]] == 'M' or \
+                        self.water[location[0]][location[1]] == 'H':
+            return 'Repeat'
         else:
             vessel_type = self.water[location[0]][location[1]]
             self.water[location[0]][location[1]] = 'H'
@@ -123,23 +140,17 @@ def computer_place_ships(board):
 
 # Main program loop
 # Initiate boards
-#p1_board = sea()
-p2_board = sea()
+human_board = sea()
+computer_board = sea()
 
 # Place ships
-#p1_board = human_place_ships(p1_board)
-p2_board = computer_place_ships(p2_board)
+# human_board = human_place_ships(human_board)
+computer_board = computer_place_ships(computer_board)
 
 # Take shots until somebody wins
-
-
-"""
-p1_board.add_vessel('D', [3,3], 'S')
-
-print p1_board.shoot([3, 3])
-print p1_board.lost()
-p1_board.display()
-print p1_board.shoot([3, 4])
-print p1_board.lost()
-"""
-p2_board.display()
+while not human_board.lost() and not computer_board.lost():
+    computer_board.display_shots()
+    print 'Enter co-ordinates, origin top left, 0-9'
+    x = int(raw_input('Across: '))
+    y = int(raw_input('Down: '))
+    print computer_board.shoot([x, y])
