@@ -37,11 +37,14 @@ class sea:
             print '  -------------------------------'
 
     def add_vessel(self, vessel_type, location, orientation):
+        # print 'Adding %s at %s %s' % (vessel_type, location, orientation)
         if orientation == 'E':
             if location[0] + vessels[vessel_type] > 10:
                 return False
             for h in range(location[0], location[0] + vessels[vessel_type]):
                 if self.water[h][location[1]] != ' ':
+                    for reverse_h in range(h - 1, location[0] - 1, -1):
+                        self.water[reverse_h][location[1]] = ' '
                     return False
                 self.water[h][location[1]] = vessel_type
         elif orientation == 'S':
@@ -49,12 +52,15 @@ class sea:
                 return False
             for v in range(location[1], location[1] + vessels[vessel_type]):
                 if self.water[location[0]][v] != ' ':
+                    for reverse_v in range(v - 1, location[1] - 1, -1):
+                        self.water[location[0]][reverse_v] = ' '
                     return False
                 self.water[location[0]][v] = vessel_type
         return True
 
     def shoot(self, location):
-        if self.water[location[0]][location[1]] == ' ' or self.water[location[0]][location[1]] == 'M':
+        if self.water[location[0]][location[1]] == ' ' or \
+                        self.water[location[0]][location[1]] == 'M':
             self.water[location[0]][location[1]] = 'M'
             return 'Miss'
         else:
