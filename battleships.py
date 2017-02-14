@@ -99,20 +99,24 @@ class sea:
             return False
 
 
+def get_coords():
+    print 'Enter co-ordinates, origin top left, 0-9'
+    x = int(raw_input('Across: '))
+    y = int(raw_input('Down: '))
+    return [x, y]
+
 def human_place_ships(board):
     board.display()
     for vessel, size in vessels.iteritems():
         print vessel
         while True:
-            print 'Enter co-ordinates, origin top left, 0-9'
-            x = int(raw_input('Across: '))
-            y = int(raw_input('Down: '))
+            location = get_coords()
             while True:
                 direction = str(raw_input('Direction (E or S): ')).upper()
                 if direction in ['E', 'S']:
                     break
                 print 'East or South, try again'
-            if board.add_vessel(vessel, [x, y], direction):
+            if board.add_vessel(vessel, location, direction):
                 break
             print 'Invalid entry, try again'
             print ''
@@ -150,7 +154,5 @@ computer_board = computer_place_ships(computer_board)
 # Take shots until somebody wins
 while not human_board.lost() and not computer_board.lost():
     computer_board.display_shots()
-    print 'Enter co-ordinates, origin top left, 0-9'
-    x = int(raw_input('Across: '))
-    y = int(raw_input('Down: '))
-    print computer_board.shoot([x, y])
+    location = get_coords()
+    print computer_board.shoot(location)
