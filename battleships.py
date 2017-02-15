@@ -101,8 +101,18 @@ class sea:
 
 def get_coords():
     print 'Enter co-ordinates, origin top left, 0-9'
-    x = int(raw_input('Across: '))
-    y = int(raw_input('Down: '))
+    while True:
+        try:
+            x = int(raw_input('Across: '))
+            y = int(raw_input('Down: '))
+        except ValueError:
+            print 'Please enter an integer'
+            continue
+        if x < 0 or x > 9 or y < 0 or y > 9:
+            print 'Co-ordinates must be between 0 and 9'
+            continue
+        else:
+            break
     return [x, y]
 
 def human_place_ships(board):
