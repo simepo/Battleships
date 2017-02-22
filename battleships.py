@@ -158,7 +158,7 @@ human_board = sea()
 computer_board = sea()
 
 # Place ships
-# human_board = human_place_ships(human_board)
+human_board = human_place_ships(human_board)
 computer_board = computer_place_ships(computer_board)
 
 # Take shots until somebody wins
@@ -166,3 +166,5 @@ while not human_board.lost() and not computer_board.lost():
     computer_board.display_shots()
     location = get_coords()
     print computer_board.shoot(location)
+    print human_board.shoot([random.randint(0, 9), random.randint(0, 9)])
+    human_board.display()
