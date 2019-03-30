@@ -5,9 +5,10 @@ import random
 
 # Global definitions
 vessels = {'C': 5, 'B': 4, 'R': 3, 'S': 3, 'D': 2}
-#vessels = {'C': 0, 'B': 0, 'R': 0, 'S': 0, 'D': 2}
+# vessels = {'C': 0, 'B': 0, 'R': 0, 'S': 0, 'D': 2}
 
-#Classes / functions
+
+# Classes / functions
 class sea:
 
     def __init__(self):
@@ -115,6 +116,7 @@ def get_coords():
             break
     return [x, y]
 
+
 def human_place_ships(board):
     board.display()
     for vessel, size in vessels.iteritems():
@@ -151,6 +153,7 @@ def computer_place_ships(board):
             if board.add_vessel(vessel, [x, y], direction):
                 break
     return board
+
 
 # Main program loop
 # Initiate boards
